@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:forgeview="http://jboss.org/forge/view"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="id" value='#{invoiceLineItemsBean.id}'/>
+		<f:event type="preRenderView" listener='#{invoiceLineItemsBean.retrieve}'/>
+	</f:metadata>
+
+	<ui:param name="pageTitle" value="View Invoice Line Items"/>
+
+	<ui:define name="header">
+		Invoice Line Items
+	</ui:define>
+
+	<ui:define name="subheader">
+		View existing Invoice Line Items
+	</ui:define>
+
+	<ui:define name="footer"/>
+
+	<ui:define name="main">
+		<h:panelGrid columnClasses="label,component,required" columns="3">
+			<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsStartDate" value="Start Date:"/>
+			<h:outputText id="invoiceLineItemsBeanInvoiceLineItemsStartDate" value="#{invoiceLineItemsBean.invoiceLineItems.startDate}">
+				<f:convertDateTime type="date"/>
+			</h:outputText>
+			<h:outputText/>
+			<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsEndDate" value="End Date:"/>
+			<h:outputText id="invoiceLineItemsBeanInvoiceLineItemsEndDate" value="#{invoiceLineItemsBean.invoiceLineItems.endDate}">
+				<f:convertDateTime type="date"/>
+			</h:outputText>
+			<h:outputText/>
+			<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsHours" value="Hours:"/>
+			<h:outputText id="invoiceLineItemsBeanInvoiceLineItemsHours" value="#{invoiceLineItemsBean.invoiceLineItems.hours}"/>
+			<h:outputText/>
+			<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsAmount" value="Amount:"/>
+			<h:outputText id="invoiceLineItemsBeanInvoiceLineItemsAmount" value="#{invoiceLineItemsBean.invoiceLineItems.amount}"/>
+			<h:outputText/>
+			<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsRate" value="Rate:"/>
+			<h:outputText id="invoiceLineItemsBeanInvoiceLineItemsRate" value="#{invoiceLineItemsBean.invoiceLineItems.rate}"/>
+			<h:outputText/>
+			<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsEmployee" value="Employee:"/>
+			<h:panelGrid columnClasses="label,component,required" columns="3" id="invoiceLineItemsBeanInvoiceLineItemsEmployee" rendered="#{!empty invoiceLineItemsBean.invoiceLineItems.employee}">
+				<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsEmployeeName" value="Name:"/>
+				<h:outputText id="invoiceLineItemsBeanInvoiceLineItemsEmployeeName" value="#{invoiceLineItemsBean.invoiceLineItems.employee.name}"/>
+				<h:outputText/>
+				<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsEmployeeTitle" value="Title:"/>
+				<h:outputText id="invoiceLineItemsBeanInvoiceLineItemsEmployeeTitle" value="#{invoiceLineItemsBean.invoiceLineItems.employee.title}"/>
+				<h:outputText/>
+				<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsEmployeeRate" value="Rate:"/>
+				<h:outputText id="invoiceLineItemsBeanInvoiceLineItemsEmployeeRate" value="#{invoiceLineItemsBean.invoiceLineItems.employee.rate}"/>
+				<h:outputText/>
+				<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsEmployeeRole" value="Role:"/>
+				<h:outputText id="invoiceLineItemsBeanInvoiceLineItemsEmployeeRole" value="#{invoiceLineItemsBean.invoiceLineItems.employee.role}"/>
+				<h:outputText/>
+				<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsEmployeeProjects" value="Projects:"/>
+				<h:dataTable id="invoiceLineItemsBeanInvoiceLineItemsEmployeeProjects" styleClass="data-table" value="#{forgeview:asList(invoiceLineItemsBean.invoiceLineItems.employee.projects)}" var="_item">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Number"/>
+						</f:facet>
+						<h:link outcome="/project/view">
+							<f:param name="id" value="#{_item.id}"/>
+							<h:outputText id="itemNumber" value="#{_item.number}"/>
+						</h:link>
+					</h:column>
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Name"/>
+						</f:facet>
+						<h:link outcome="/project/view">
+							<f:param name="id" value="#{_item.id}"/>
+							<h:outputText id="itemName" value="#{_item.name}"/>
+						</h:link>
+					</h:column>
+				</h:dataTable>
+				<h:outputText/>
+			</h:panelGrid>
+			<h:outputText/>
+			<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsProject" value="Project:"/>
+			<h:panelGrid columnClasses="label,component,required" columns="3" id="invoiceLineItemsBeanInvoiceLineItemsProject" rendered="#{!empty invoiceLineItemsBean.invoiceLineItems.project}">
+				<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsProjectNumber" value="Number:"/>
+				<h:outputText id="invoiceLineItemsBeanInvoiceLineItemsProjectNumber" value="#{invoiceLineItemsBean.invoiceLineItems.project.number}"/>
+				<h:outputText/>
+				<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsProjectName" value="Name:"/>
+				<h:outputText id="invoiceLineItemsBeanInvoiceLineItemsProjectName" value="#{invoiceLineItemsBean.invoiceLineItems.project.name}"/>
+				<h:outputText/>
+				<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsProjectStatus" value="Status:"/>
+				<h:outputText id="invoiceLineItemsBeanInvoiceLineItemsProjectStatus" value="#{invoiceLineItemsBean.invoiceLineItems.project.status}"/>
+				<h:outputText/>
+				<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsProjectBudget" value="Budget:"/>
+				<h:outputText id="invoiceLineItemsBeanInvoiceLineItemsProjectBudget" value="#{invoiceLineItemsBean.invoiceLineItems.project.budget}"/>
+				<h:outputText/>
+				<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsProjectStartDate" value="Start Date:"/>
+				<h:outputText id="invoiceLineItemsBeanInvoiceLineItemsProjectStartDate" value="#{invoiceLineItemsBean.invoiceLineItems.project.startDate}">
+					<f:convertDateTime type="date"/>
+				</h:outputText>
+				<h:outputText/>
+				<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsProjectEndDate" value="End Date:"/>
+				<h:outputText id="invoiceLineItemsBeanInvoiceLineItemsProjectEndDate" value="#{invoiceLineItemsBean.invoiceLineItems.project.endDate}">
+					<f:convertDateTime type="date"/>
+				</h:outputText>
+				<h:outputText/>
+				<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsProjectClient" value="Client:"/>
+				<h:link id="invoiceLineItemsBeanInvoiceLineItemsProjectClient" outcome="/client/view" rendered="#{!empty invoiceLineItemsBean.invoiceLineItems.project.client}" value="#{invoiceLineItemsBean.invoiceLineItems.project.client}">
+					<f:param name="id" value="#{invoiceLineItemsBean.invoiceLineItems.project.client.id}"/>
+				</h:link>
+				<h:outputText/>
+				<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsProjectEmployee" value="Employee:"/>
+				<h:dataTable id="invoiceLineItemsBeanInvoiceLineItemsProjectEmployee" styleClass="data-table" value="#{forgeview:asList(invoiceLineItemsBean.invoiceLineItems.project.employee)}" var="_item">
+					<h:column>
+						<f:facet name="header">
+							<h:outputText value="Name"/>
+						</f:facet>
+						<h:link outcome="/employee/view">
+							<f:param name="id" value="#{_item.id}"/>
+							<h:outputText id="itemName" value="#{_item.name}"/>
+						</h:link>
+					</h:column>
+				</h:dataTable>
+				<h:outputText/>
+			</h:panelGrid>
+			<h:outputText/>
+			<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsStatus" value="Status:"/>
+			<h:outputText id="invoiceLineItemsBeanInvoiceLineItemsStatus" value="#{invoiceLineItemsBean.invoiceLineItems.status}"/>
+			<h:outputText/>
+			<h:outputLabel for="invoiceLineItemsBeanInvoiceLineItemsInvoice" value="Invoice:"/>
+			<h:link id="invoiceLineItemsBeanInvoiceLineItemsInvoice" outcome="/invoice/view" rendered="#{!empty invoiceLineItemsBean.invoiceLineItems.invoice}" value="#{invoiceLineItemsBean.invoiceLineItems.invoice}">
+				<f:param name="id" value="#{invoiceLineItemsBean.invoiceLineItems.invoice.id}"/>
+			</h:link>
+			<h:outputText/>
+		</h:panelGrid>
+
+		<div class="buttons">
+			<h:link value="View All" outcome="search" styleClass="btn btn-primary"/> 
+			<h:link value="Edit" outcome="create" includeViewParams="true" styleClass="btn btn-primary"/>
+			<h:link value="Create New" outcome="create" styleClass="btn btn-primary"/>
+		</div>
+	</ui:define>
+
+</ui:composition>

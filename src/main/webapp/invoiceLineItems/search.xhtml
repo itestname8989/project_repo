@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:forgeview="http://jboss.org/forge/view"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="page" value='#{invoiceLineItemsBean.page}'/>
+		<f:event type="preRenderView" listener='#{invoiceLineItemsBean.paginate}'/>
+	</f:metadata>
+
+	<ui:param name="pageTitle" value="Search Invoice Line Items entities"/>
+
+	<ui:define name="header">
+		Invoice Line Items
+	</ui:define>
+
+	<ui:define name="subheader">
+		Search Invoice Line Items entities
+	</ui:define>
+
+	<ui:define name="footer"/>
+
+	<ui:define name="main">
+		<h:form id="search">
+			<f:validateBean disabled="true">
+				<h:panelGroup styleClass="search">
+
+					<h:panelGrid columnClasses="label,component,required" columns="3">
+						<h:outputLabel for="invoiceLineItemsBeanExampleStatus" value="Status:"/>
+						<h:panelGroup>
+							<h:selectOneMenu id="invoiceLineItemsBeanExampleStatus" value="#{invoiceLineItemsBean.example.status}">
+								<f:selectItem/>
+								<f:selectItem itemValue="INVOICE_GENERATED"/>
+								<f:selectItem itemValue="INVOICE_NOT_GENERATED"/>
+							</h:selectOneMenu>
+							<h:message for="invoiceLineItemsBeanExampleStatus" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="invoiceLineItemsBeanExampleInvoice" value="Invoice:"/>
+						<h:panelGroup>
+							<h:selectOneMenu converter="#{invoiceBean.converter}" id="invoiceLineItemsBeanExampleInvoice" value="#{invoiceLineItemsBean.example.invoice}">
+								<f:selectItem/>
+								<f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{invoiceBean.all}" var="_item"/>
+							</h:selectOneMenu>
+							<h:message for="invoiceLineItemsBeanExampleInvoice" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+					</h:panelGrid>
+					<h:panelGroup styleClass="buttons">
+						<h:commandLink value="Search" action='#{invoiceLineItemsBean.search}' styleClass="btn btn-primary"/>
+						<h:commandLink value="Create New" action='#{invoiceLineItemsBean.create}' styleClass="btn btn-primary"/>
+					</h:panelGroup>
+				</h:panelGroup>
+			</f:validateBean>
+			
+			<h:dataTable id="invoiceLineItemsBeanPageItems" styleClass="data-table" value="#{invoiceLineItemsBean.pageItems}" var="_item">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Start Date"/>
+					</f:facet>
+					<h:link outcome="/invoiceLineItems/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemStartDate" value="#{_item.startDate}">
+							<f:convertDateTime type="date"/>
+						</h:outputText>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="End Date"/>
+					</f:facet>
+					<h:link outcome="/invoiceLineItems/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemEndDate" value="#{_item.endDate}">
+							<f:convertDateTime type="date"/>
+						</h:outputText>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Hours"/>
+					</f:facet>
+					<h:link outcome="/invoiceLineItems/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemHours" value="#{_item.hours}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Amount"/>
+					</f:facet>
+					<h:link outcome="/invoiceLineItems/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemAmount" value="#{_item.amount}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Rate"/>
+					</f:facet>
+					<h:link outcome="/invoiceLineItems/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemRate" value="#{_item.rate}"/>
+					</h:link>
+				</h:column>
+			</h:dataTable>
+			<ui:include src="/resources/scaffold/paginator.xhtml">
+				<ui:param name="paginatorBean" value='#{invoiceLineItemsBean}'/>
+			</ui:include>
+		</h:form>
+			
+	</ui:define>
+
+</ui:composition>

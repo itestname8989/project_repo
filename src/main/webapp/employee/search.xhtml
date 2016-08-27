@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="page" value='#{employeeBean.page}'/>
+		<f:event type="preRenderView" listener='#{employeeBean.paginate}'/>
+	</f:metadata>
+
+	<ui:param name="pageTitle" value="Search Employee entities"/>
+
+	<ui:define name="header">
+		Employee
+	</ui:define>
+
+	<ui:define name="subheader">
+		Search Employee entities
+	</ui:define>
+
+	<ui:define name="footer"/>
+
+	<ui:define name="main">
+		<h:form id="search">
+			<f:validateBean disabled="true">
+				<h:panelGroup styleClass="search">
+
+					<h:panelGrid columnClasses="label,component,required" columns="3">
+						<h:outputLabel for="employeeBeanExampleName" value="Name:"/>
+						<h:panelGroup>
+							<h:inputText id="employeeBeanExampleName" value="#{employeeBean.example.name}"/>
+							<h:message for="employeeBeanExampleName" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="employeeBeanExampleTitle" value="Title:"/>
+						<h:panelGroup>
+							<h:inputText id="employeeBeanExampleTitle" value="#{employeeBean.example.title}"/>
+							<h:message for="employeeBeanExampleTitle" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="employeeBeanExampleRole" value="Role:"/>
+						<h:panelGroup>
+							<h:selectOneMenu id="employeeBeanExampleRole" value="#{employeeBean.example.role}">
+								<f:selectItem/>
+								<f:selectItem itemValue="PROJECT_MANAGER"/>
+								<f:selectItem itemValue="DEVELOPER"/>
+								<f:selectItem itemValue="ACCOUNTANT"/>
+							</h:selectOneMenu>
+							<h:message for="employeeBeanExampleRole" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+					</h:panelGrid>
+					<h:panelGroup styleClass="buttons">
+						<h:commandLink value="Search" action='#{employeeBean.search}' styleClass="btn btn-primary"/>
+						<h:commandLink value="Create New" action='#{employeeBean.create}' styleClass="btn btn-primary"/>
+					</h:panelGroup>
+				</h:panelGroup>
+			</f:validateBean>
+			
+			<h:dataTable id="employeeBeanPageItems" styleClass="data-table" value="#{employeeBean.pageItems}" var="_item">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Name"/>
+					</f:facet>
+					<h:link outcome="/employee/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemName" value="#{_item.name}"/>
+					</h:link>
+				</h:column>
+			</h:dataTable>
+			<ui:include src="/resources/scaffold/paginator.xhtml">
+				<ui:param name="paginatorBean" value='#{employeeBean}'/>
+			</ui:include>
+		</h:form>
+			
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:forgeview="http://jboss.org/forge/view"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="id" value='#{invoiceBean.id}'/>
+		<f:event type="preRenderView" listener='#{invoiceBean.retrieve}'/>
+	</f:metadata>
+
+	<ui:param name="pageTitle" value="View Invoice"/>
+
+	<ui:define name="header">
+		Invoice
+	</ui:define>
+
+	<ui:define name="subheader">
+		View existing Invoice
+	</ui:define>
+
+	<ui:define name="footer"/>
+
+	<ui:define name="main">
+		<h:panelGrid columnClasses="label,component,required" columns="3">
+			<h:outputLabel for="invoiceBeanInvoiceClient" value="Client:"/>
+			<h:link id="invoiceBeanInvoiceClient" outcome="/client/view" rendered="#{!empty invoiceBean.invoice.client}" value="#{invoiceBean.invoice.client}">
+				<f:param name="id" value="#{invoiceBean.invoice.client.id}"/>
+			</h:link>
+			<h:outputText/>
+			<h:outputLabel for="invoiceBeanInvoiceDate" value="Date:"/>
+			<h:outputText id="invoiceBeanInvoiceDate" value="#{invoiceBean.invoice.date}">
+				<f:convertDateTime type="date"/>
+			</h:outputText>
+			<h:outputText/>
+			<h:outputLabel for="invoiceBeanInvoiceInvoiceLineItems" value="Invoice Line Items:"/>
+			<h:dataTable id="invoiceBeanInvoiceInvoiceLineItems" styleClass="data-table" value="#{forgeview:asList(invoiceBean.invoice.invoiceLineItems)}" var="_item">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Start Date"/>
+					</f:facet>
+					<h:link outcome="/invoiceLineItems/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemStartDate" value="#{_item.startDate}">
+							<f:convertDateTime type="date"/>
+						</h:outputText>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="End Date"/>
+					</f:facet>
+					<h:link outcome="/invoiceLineItems/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemEndDate" value="#{_item.endDate}">
+							<f:convertDateTime type="date"/>
+						</h:outputText>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Hours"/>
+					</f:facet>
+					<h:link outcome="/invoiceLineItems/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemHours" value="#{_item.hours}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Amount"/>
+					</f:facet>
+					<h:link outcome="/invoiceLineItems/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemAmount" value="#{_item.amount}"/>
+					</h:link>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Rate"/>
+					</f:facet>
+					<h:link outcome="/invoiceLineItems/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemRate" value="#{_item.rate}"/>
+					</h:link>
+				</h:column>
+			</h:dataTable>
+			<h:outputText/>
+			<h:outputLabel for="invoiceBeanInvoiceNumber" value="Number:"/>
+			<h:outputText id="invoiceBeanInvoiceNumber" value="#{invoiceBean.invoice.number}"/>
+			<h:outputText/>
+		</h:panelGrid>
+
+		<div class="buttons">
+			<h:link value="View All" outcome="search" styleClass="btn btn-primary"/> 
+			<h:link value="Edit" outcome="create" includeViewParams="true" styleClass="btn btn-primary"/>
+			<h:link value="Create New" outcome="create" styleClass="btn btn-primary"/>
+		</div>
+	</ui:define>
+
+</ui:composition>

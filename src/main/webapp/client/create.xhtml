@@ -1,0 +1,205 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:forgeview="http://jboss.org/forge/view"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="id" value='#{clientBean.id}'/>
+		<f:event type="preRenderView" listener='#{clientBean.retrieve}'/>
+	</f:metadata>
+
+	<ui:param name="pageTitle" value="Create Client"/>
+
+	<ui:define name="header">
+		Client
+	</ui:define>
+
+	<ui:define name="subheader">
+		<c:choose>
+			<c:when test='#{!empty clientBean.id}'>
+				Edit existing Client
+			</c:when>
+			<c:otherwise>
+				Create a new Client
+			</c:otherwise>
+		</c:choose>
+	</ui:define>
+
+	<ui:define name="footer"/>
+
+	<ui:define name="main">
+		<h:form id="create">
+			<h:messages globalOnly="true" styleClass="error"/>
+
+			<h:panelGrid columnClasses="label,component,required" columns="3">
+				<h:outputLabel value="Address:"/>
+				<h:panelGroup>
+					<h:commandLink action="#{clientBean.client.newAddress}" rendered="#{empty clientBean.client.address}" value="Create New Address"/>
+					<h:panelGrid columnClasses="label,component,required" columns="3" rendered="#{!empty clientBean.client.address}">
+						<h:outputLabel for="clientBeanClientAddressCity" value="City:"/>
+						<h:panelGroup>
+							<h:inputText id="clientBeanClientAddressCity" value="#{clientBean.client.address.city}"/>
+							<h:message for="clientBeanClientAddressCity" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="clientBeanClientAddressAddressLine2" value="Address Line 2:"/>
+						<h:panelGroup>
+							<h:inputText id="clientBeanClientAddressAddressLine2" value="#{clientBean.client.address.addressLine2}"/>
+							<h:message for="clientBeanClientAddressAddressLine2" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="clientBeanClientAddressAddressLine1" value="Address Line 1:"/>
+						<h:panelGroup>
+							<h:inputText id="clientBeanClientAddressAddressLine1" value="#{clientBean.client.address.addressLine1}"/>
+							<h:message for="clientBeanClientAddressAddressLine1" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="clientBeanClientAddressState" value="State:"/>
+						<h:panelGroup>
+							<h:inputText id="clientBeanClientAddressState" value="#{clientBean.client.address.state}"/>
+							<h:message for="clientBeanClientAddressState" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+						<h:outputLabel for="clientBeanClientAddressZip" value="Zip:"/>
+						<h:panelGroup>
+							<h:inputText id="clientBeanClientAddressZip" value="#{clientBean.client.address.zip}"/>
+							<h:message for="clientBeanClientAddressZip" styleClass="error"/>
+						</h:panelGroup>
+						<h:outputText/>
+					</h:panelGrid>
+				</h:panelGroup>
+				<h:outputText/>
+				<h:outputLabel for="clientBeanClientNumber" value="Number:"/>
+				<h:panelGroup>
+					<h:inputText id="clientBeanClientNumber" value="#{clientBean.client.number}"/>
+					<h:message for="clientBeanClientNumber" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText/>
+				<h:outputLabel for="clientBeanClientName" value="Name:"/>
+				<h:panelGroup>
+					<h:inputText id="clientBeanClientName" value="#{clientBean.client.name}"/>
+					<h:message for="clientBeanClientName" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText/>
+				<h:outputLabel for="clientBeanClientContact" value="Contact:"/>
+				<h:panelGroup>
+					<h:inputText id="clientBeanClientContact" value="#{clientBean.client.contact}"/>
+					<h:message for="clientBeanClientContact" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText/>
+				<h:outputLabel for="clientBeanClientEmail" value="Email:"/>
+				<h:panelGroup>
+					<h:inputText id="clientBeanClientEmail" value="#{clientBean.client.email}"/>
+					<h:message for="clientBeanClientEmail" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText/>
+				<h:outputLabel for="clientBeanClientProjects" value="Projects:"/>
+				<h:panelGroup>
+					<ui:param name="_collection" value="#{clientBean.client.projects}"/>
+					<h:dataTable id="clientBeanClientProjects" styleClass="data-table" value="#{forgeview:asList(_collection)}" var="_item">
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Number"/>
+							</f:facet>
+							<h:link outcome="/project/view">
+								<f:param name="id" value="#{_item.id}"/>
+								<h:outputText id="itemNumber" value="#{_item.number}"/>
+							</h:link>
+							<f:facet name="footer">
+								<h:inputText id="projectBeanAddNumber" value="#{projectBean.add.number}"/>
+								<h:message for="projectBeanAddNumber" styleClass="error"/>
+							</f:facet>
+						</h:column>
+						<h:column>
+							<f:facet name="header">
+								<h:outputText value="Name"/>
+							</f:facet>
+							<h:link outcome="/project/view">
+								<f:param name="id" value="#{_item.id}"/>
+								<h:outputText id="itemName" value="#{_item.name}"/>
+							</h:link>
+							<f:facet name="footer">
+								<h:inputText id="projectBeanAddName" value="#{projectBean.add.name}"/>
+								<h:message for="projectBeanAddName" styleClass="error"/>
+							</f:facet>
+						</h:column>
+						<h:column footerClass="remove-column" headerClass="remove-column">
+							<h:commandLink action="#{_collection.remove(_item)}" styleClass="remove-button"/>
+							<f:facet name="footer">
+								<h:commandLink action="#{_collection.add(projectBean.added)}" id="clientBeanClientProjectsAdd" styleClass="add-button">
+									<f:setPropertyActionListener target="#{projectBean.add.client}" value="#{clientBean.client}"/>
+								</h:commandLink>
+							</f:facet>
+						</h:column>
+					</h:dataTable>
+				</h:panelGroup>
+				<h:outputText/>
+				<h:outputLabel for="clientBeanClientBillingTerms" value="Billing Terms:"/>
+				<h:panelGroup>
+					<h:selectOneMenu id="clientBeanClientBillingTerms" value="#{clientBean.client.billingTerms}">
+						<f:selectItem/>
+						<f:selectItem itemValue="DUE_ON_RECIPT"/>
+						<f:selectItem itemValue="NET_10_DAYS"/>
+						<f:selectItem itemValue="NET_20_DAYS"/>
+						<f:selectItem itemValue="NET_30_DAYS"/>
+						<f:selectItem itemValue="NET_60_DAYS"/>
+					</h:selectOneMenu>
+					<h:message for="clientBeanClientBillingTerms" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText/>
+				<h:outputLabel for="clientBeanClientInvoiceFreq" value="Invoice Freq:"/>
+				<h:panelGroup>
+					<h:selectOneMenu id="clientBeanClientInvoiceFreq" value="#{clientBean.client.invoiceFreq}">
+						<f:selectItem/>
+						<f:selectItem itemValue="WEELLY"/>
+						<f:selectItem itemValue="BIWEEKLY"/>
+						<f:selectItem itemValue="MONTHLY"/>
+						<f:selectItem itemValue="MONTHLY_CAL"/>
+					</h:selectOneMenu>
+					<h:message for="clientBeanClientInvoiceFreq" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText/>
+				<h:outputLabel for="clientBeanClientCompany" value="Company:"/>
+				<h:panelGroup>
+					<h:selectOneMenu converter="#{companyBean.converter}" id="clientBeanClientCompany" value="#{clientBean.client.company}">
+						<f:selectItem/>
+						<f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{companyBean.all}" var="_item"/>
+					</h:selectOneMenu>
+					<h:message for="clientBeanClientCompany" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText/>
+				<h:outputLabel for="clientBeanClientInvoiceGrouping" value="Invoice Grouping:"/>
+				<h:panelGroup>
+					<h:selectOneMenu id="clientBeanClientInvoiceGrouping" value="#{clientBean.client.invoiceGrouping}">
+						<f:selectItem/>
+						<f:selectItem itemValue="PROJECT"/>
+						<f:selectItem itemValue="CLIENT"/>
+					</h:selectOneMenu>
+					<h:message for="clientBeanClientInvoiceGrouping" styleClass="error"/>
+				</h:panelGroup>
+				<h:outputText/>
+			</h:panelGrid>
+
+			<div class="buttons">
+				<h:commandLink value="Save" action='#{clientBean.update}' styleClass="btn btn-primary"/>
+				<c:choose>
+					<c:when test='#{!empty clientBean.id}'>
+						<h:link value="Cancel" outcome="view" styleClass="btn btn-primary">
+							<f:param name="id" value='#{clientBean.id}'/>
+						</h:link>
+						<h:commandLink value="Delete" action='#{clientBean.delete}' styleClass="btn btn-primary"/>
+					</c:when>
+					<c:otherwise>
+						<h:link value="Cancel" outcome="search" styleClass="btn btn-primary"/>
+					</c:otherwise>
+				</c:choose>
+			</div>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

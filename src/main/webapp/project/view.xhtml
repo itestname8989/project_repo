@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:forgeview="http://jboss.org/forge/view"
+	template="/resources/scaffold/pageTemplate.xhtml">
+
+	<f:metadata>
+		<f:viewParam name="id" value='#{projectBean.id}'/>
+		<f:event type="preRenderView" listener='#{projectBean.retrieve}'/>
+	</f:metadata>
+
+	<ui:param name="pageTitle" value="View Project"/>
+
+	<ui:define name="header">
+		Project
+	</ui:define>
+
+	<ui:define name="subheader">
+		View existing Project
+	</ui:define>
+
+	<ui:define name="footer"/>
+
+	<ui:define name="main">
+		<h:panelGrid columnClasses="label,component,required" columns="3">
+			<h:outputLabel for="projectBeanProjectNumber" value="Number:"/>
+			<h:outputText id="projectBeanProjectNumber" value="#{projectBean.project.number}"/>
+			<h:outputText/>
+			<h:outputLabel for="projectBeanProjectName" value="Name:"/>
+			<h:outputText id="projectBeanProjectName" value="#{projectBean.project.name}"/>
+			<h:outputText/>
+			<h:outputLabel for="projectBeanProjectBudget" value="Budget:"/>
+			<h:outputText id="projectBeanProjectBudget" value="#{projectBean.project.budget}"/>
+			<h:outputText/>
+			<h:outputLabel for="projectBeanProjectStartDate" value="Start Date:"/>
+			<h:outputText id="projectBeanProjectStartDate" value="#{projectBean.project.startDate}">
+				<f:convertDateTime type="date"/>
+			</h:outputText>
+			<h:outputText/>
+			<h:outputLabel for="projectBeanProjectEndDate" value="End Date:"/>
+			<h:outputText id="projectBeanProjectEndDate" value="#{projectBean.project.endDate}">
+				<f:convertDateTime type="date"/>
+			</h:outputText>
+			<h:outputText/>
+			<h:outputLabel for="projectBeanProjectClient" value="Client:"/>
+			<h:link id="projectBeanProjectClient" outcome="/client/view" rendered="#{!empty projectBean.project.client}" value="#{projectBean.project.client}">
+				<f:param name="id" value="#{projectBean.project.client.id}"/>
+			</h:link>
+			<h:outputText/>
+			<h:outputLabel for="projectBeanProjectEmployee" value="Employee:"/>
+			<h:dataTable id="projectBeanProjectEmployee" styleClass="data-table" value="#{forgeview:asList(projectBean.project.employee)}" var="_item">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Name"/>
+					</f:facet>
+					<h:link outcome="/employee/view">
+						<f:param name="id" value="#{_item.id}"/>
+						<h:outputText id="itemName" value="#{_item.name}"/>
+					</h:link>
+				</h:column>
+			</h:dataTable>
+			<h:outputText/>
+			<h:outputLabel for="projectBeanProjectStatus" value="Status:"/>
+			<h:outputText id="projectBeanProjectStatus" value="#{projectBean.project.status}"/>
+			<h:outputText/>
+		</h:panelGrid>
+
+		<div class="buttons">
+			<h:link value="View All" outcome="search" styleClass="btn btn-primary"/> 
+			<h:link value="Edit" outcome="create" includeViewParams="true" styleClass="btn btn-primary"/>
+			<h:link value="Create New" outcome="create" styleClass="btn btn-primary"/>
+		</div>
+	</ui:define>
+
+</ui:composition>
