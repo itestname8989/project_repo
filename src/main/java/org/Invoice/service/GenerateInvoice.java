@@ -19,7 +19,7 @@ import org.Invoice.dao.EmployeeDao;
 import org.Invoice.dao.InvoiceDao;
 import org.Invoice.dao.InvoiceLineItemsDao;
 import org.Invoice.dao.NewTimeEntryDao;
-import org.Invoice.dao.ProjectDao;
+
 import org.Invoice.springmvc.webapp.model.Client;
 import org.Invoice.springmvc.webapp.model.Employee;
 import org.Invoice.springmvc.webapp.model.Invoice;
@@ -199,7 +199,7 @@ public class GenerateInvoice implements Serializable {
 	}
 
 	@Inject
-	ProjectDao projectDao;
+	InvoiceDao projectDao;
 
 	private void addInvoiceLineItems(InvoiceFreq fre) {
 		// 

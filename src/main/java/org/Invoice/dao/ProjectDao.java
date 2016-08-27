@@ -1,5 +1,6 @@
 package org.Invoice.dao;
 
+
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -36,10 +37,9 @@ public class ProjectDao {
 	}
 
 	public List<Project> listAll(Integer startPosition, Integer maxResult) {
-		TypedQuery<Project> findAllQuery = em
-				.createQuery(
-						"SELECT DISTINCT p FROM Project p LEFT JOIN FETCH p.client LEFT JOIN FETCH p.employee ORDER BY p.id",
-						Project.class);
+		TypedQuery<Project> findAllQuery = em.createQuery(
+				"SELECT DISTINCT p FROM Project p LEFT JOIN FETCH p.client LEFT JOIN FETCH p.employee ORDER BY p.id",
+				Project.class);
 		if (startPosition != null) {
 			findAllQuery.setFirstResult(startPosition);
 		}
