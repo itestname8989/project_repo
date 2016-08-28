@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateful;
@@ -24,6 +25,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.Invoice.service.AuthService;
 import org.Invoice.springmvc.webapp.model.Employee;
 import java.util.Iterator;
 import org.Invoice.springmvc.webapp.model.Project;
@@ -300,5 +302,13 @@ public class EmployeeBean implements Serializable {
 		Employee added = this.add;
 		this.add = new Employee();
 		return added;
+	}
+	
+	@Inject
+	AuthService authService;
+	@PostConstruct
+	public void init() {
+	    // 
+		authService.validateUserLogin();
 	}
 }

@@ -30,7 +30,7 @@ public class Account implements Serializable {
 	@Column
 	private String password;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Employee employee;
 
 	public Long getId() {

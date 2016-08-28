@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateful;
@@ -11,6 +12,7 @@ import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.inject.Inject;
@@ -41,11 +43,14 @@ import org.Invoice.springmvc.webapp.model.Account;
 @ConversationScoped
 public class AccountBean implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-
 	/*
 	 * Support creating and retrieving Account entities
 	 */
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2669845030334989949L;
 
 	private Long id;
 
@@ -70,8 +75,60 @@ public class AccountBean implements Serializable {
 	@Inject
 	private Conversation conversation;
 
+	@Inject
+	private org.Invoice.service.AuthService authService;
+
+	private String loginUrl;
+	//private static final ExternalContext conx = FacesContext.getCurrentInstance().getExternalContext();
+	//private static final String contextUrl = conx.getRequestContextPath();
+
+	public static void redirectToLogin() {
+		ExternalContext conx = FacesContext.getCurrentInstance().getExternalContext();
+		
+		try {
+			conx.redirect(conx.getRequestContextPath());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	@PersistenceContext(unitName = "Invoice-persistence-unit", type = PersistenceContextType.EXTENDED)
 	private EntityManager entityManager;
+
+	public String processLogin() {
+
+		ExternalContext conx = FacesContext.getCurrentInstance().getExternalContext();
+		account = authService.isAuthenticated(account);
+		if (account == null)
+			return null;
+		else {
+			try {
+				authService.setAccount(account);
+				conx.redirect(conx.getRequestContextPath() + "/faces/account/index.xhtml");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return null;
+
+	}
+	
+/*	public void processLogout() {
+		authService.setAccount(null);
+		authService.validateUserLogin();
+	}*/
+
+	public String getLoginUrl() {
+
+		return null;// contextUrl + "/faces/account/login.xhtml";
+	}
+
+	public void setLoginUrl(String loginUrl) {
+		this.loginUrl = loginUrl;
+	}
 
 	public String create() {
 
@@ -119,8 +176,7 @@ public class AccountBean implements Serializable {
 				return "view?faces-redirect=true&id=" + this.account.getId();
 			}
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(e.getMessage()));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.getMessage()));
 			return null;
 		}
 	}
@@ -135,8 +191,7 @@ public class AccountBean implements Serializable {
 			this.entityManager.flush();
 			return "search?faces-redirect=true";
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(e.getMessage()));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(e.getMessage()));
 			return null;
 		}
 	}
@@ -171,10 +226,19 @@ public class AccountBean implements Serializable {
 		this.example = example;
 	}
 
-	public String search() {
+	public String search() {	
+
 		this.page = 0;
 		return null;
+
 	}
+	
+	@PostConstruct
+	public void init() {
+	    // 
+		authService.validateUserLogin();
+	}
+
 
 	public void paginate() {
 
@@ -184,19 +248,16 @@ public class AccountBean implements Serializable {
 
 		CriteriaQuery<Long> countCriteria = builder.createQuery(Long.class);
 		Root<Account> root = countCriteria.from(Account.class);
-		countCriteria = countCriteria.select(builder.count(root)).where(
-				getSearchPredicates(root));
-		this.count = this.entityManager.createQuery(countCriteria)
-				.getSingleResult();
+		countCriteria = countCriteria.select(builder.count(root)).where(getSearchPredicates(root));
+		this.count = this.entityManager.createQuery(countCriteria).getSingleResult();
 
 		// Populate this.pageItems
 
 		CriteriaQuery<Account> criteria = builder.createQuery(Account.class);
 		root = criteria.from(Account.class);
-		TypedQuery<Account> query = this.entityManager.createQuery(criteria
-				.select(root).where(getSearchPredicates(root)));
-		query.setFirstResult(this.page * getPageSize()).setMaxResults(
-				getPageSize());
+		TypedQuery<Account> query = this.entityManager
+				.createQuery(criteria.select(root).where(getSearchPredicates(root)));
+		query.setFirstResult(this.page * getPageSize()).setMaxResults(getPageSize());
 		this.pageItems = query.getResultList();
 	}
 
@@ -207,15 +268,13 @@ public class AccountBean implements Serializable {
 
 		String userName = this.example.getUserName();
 		if (userName != null && !"".equals(userName)) {
-			predicatesList.add(builder.like(
-					builder.lower(root.<String> get("userName")),
-					'%' + userName.toLowerCase() + '%'));
+			predicatesList.add(
+					builder.like(builder.lower(root.<String> get("userName")), '%' + userName.toLowerCase() + '%'));
 		}
 		String password = this.example.getPassword();
 		if (password != null && !"".equals(password)) {
-			predicatesList.add(builder.like(
-					builder.lower(root.<String> get("password")),
-					'%' + password.toLowerCase() + '%'));
+			predicatesList.add(
+					builder.like(builder.lower(root.<String> get("password")), '%' + password.toLowerCase() + '%'));
 		}
 
 		return predicatesList.toArray(new Predicate[predicatesList.size()]);
@@ -236,10 +295,8 @@ public class AccountBean implements Serializable {
 
 	public List<Account> getAll() {
 
-		CriteriaQuery<Account> criteria = this.entityManager
-				.getCriteriaBuilder().createQuery(Account.class);
-		return this.entityManager.createQuery(
-				criteria.select(criteria.from(Account.class))).getResultList();
+		CriteriaQuery<Account> criteria = this.entityManager.getCriteriaBuilder().createQuery(Account.class);
+		return this.entityManager.createQuery(criteria.select(criteria.from(Account.class))).getResultList();
 	}
 
 	@Resource
@@ -247,21 +304,18 @@ public class AccountBean implements Serializable {
 
 	public Converter getConverter() {
 
-		final AccountBean ejbProxy = this.sessionContext
-				.getBusinessObject(AccountBean.class);
+		final AccountBean ejbProxy = this.sessionContext.getBusinessObject(AccountBean.class);
 
 		return new Converter() {
 
 			@Override
-			public Object getAsObject(FacesContext context,
-					UIComponent component, String value) {
+			public Object getAsObject(FacesContext context, UIComponent component, String value) {
 
 				return ejbProxy.findById(Long.valueOf(value));
 			}
 
 			@Override
-			public String getAsString(FacesContext context,
-					UIComponent component, Object value) {
+			public String getAsString(FacesContext context, UIComponent component, Object value) {
 
 				if (value == null) {
 					return "";
@@ -287,4 +341,5 @@ public class AccountBean implements Serializable {
 		this.add = new Account();
 		return added;
 	}
+
 }

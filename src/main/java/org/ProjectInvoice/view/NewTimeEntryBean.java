@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateful;
@@ -25,6 +26,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.Invoice.springmvc.webapp.model.NewTimeEntry;
+import org.Invoice.service.AuthService;
 import org.Invoice.springmvc.webapp.model.Employee;
 import org.Invoice.springmvc.webapp.model.Project;
 import org.Invoice.springmvc.webapp.model.Status;
@@ -63,6 +65,7 @@ public class NewTimeEntryBean implements Serializable {
 	private NewTimeEntry newTimeEntry;
 
 	public NewTimeEntry getNewTimeEntry() {
+		this.newTimeEntry.setEmployee(authService.getAccount().getEmployee());
 		return this.newTimeEntry;
 	}
 
@@ -293,5 +296,13 @@ public class NewTimeEntryBean implements Serializable {
 		NewTimeEntry added = this.add;
 		this.add = new NewTimeEntry();
 		return added;
+	}
+	
+	@Inject
+	AuthService authService;
+	@PostConstruct
+	public void init() {
+	    // 
+		authService.validateUserLogin();
 	}
 }

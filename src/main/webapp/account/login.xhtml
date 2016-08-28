@@ -39,35 +39,32 @@
 			<h:panelGrid columnClasses="label,component,required" columns="3">
 				<h:outputLabel for="accountBeanAccountUserName" value="User Name:"/>
 				<h:panelGroup>
-					<h:inputText id="accountBeanAccountUserName" style="width:150px" value="#{accountBean.account.userName}"/>
+					<h:inputText id="accountBeanAccountUserName" style="width:90px" value="#{accountBean.account.userName}"/>
 					<h:message for="accountBeanAccountUserName" styleClass="error"/>
 				</h:panelGroup>
 				<h:outputText/>
 				<h:outputLabel for="accountBeanAccountPassword" value="Password:"/>
 				<h:panelGroup>
-					<h:inputSecret id="accountBeanAccountPassword" style="width:150px" value="#{accountBean.account.password}"/>
+					<h:inputSecret id="accountBeanAccountPassword" style="width:90px" value="#{accountBean.account.password}"/>
 					<h:message for="accountBeanAccountPassword" styleClass="error"/>
 				</h:panelGroup>
-				<h:outputText/>	
-				<h:panelGroup>
-					<div class="buttons" style="padding-left: 10px; align:right">
-						<h:commandLink value="Login" action='#{accountBean.processLogin()}' styleClass="btn btn-primary"/>
-						<c:choose>
-							<c:when test='#{!empty accountBean.id}'>
-								<h:link value="Cancel" outcome="view" styleClass="btn btn-primary">
-									<f:param name="id" value='#{accountBean.id}'/>
-								</h:link>
-								<h:commandLink value="Delete" action='#{accountBean.delete}' styleClass="btn btn-primary"/>
-							</c:when>
-							<c:otherwise>
-								<h:link value="Cancel" outcome="search" styleClass="btn btn-primary"/>
-							</c:otherwise>
-						</c:choose>
-					</div>
-				</h:panelGroup>			
+				<h:outputText/>				
 			</h:panelGrid>
 
-			
+			<div class="buttons">
+				<h:commandLink value="Login" action='#{accountBean.processLogin()}' styleClass="btn btn-primary"/>
+				<c:choose>
+					<c:when test='#{!empty accountBean.id}'>
+						<h:link value="Cancel" outcome="view" styleClass="btn btn-primary">
+							<f:param name="id" value='#{accountBean.id}'/>
+						</h:link>
+						<h:commandLink value="Delete" action='#{accountBean.delete}' styleClass="btn btn-primary"/>
+					</c:when>
+					<c:otherwise>
+						<h:link value="Cancel" outcome="search" styleClass="btn btn-primary"/>
+					</c:otherwise>
+				</c:choose>
+			</div>
 		</h:form>
 	</ui:define>
 

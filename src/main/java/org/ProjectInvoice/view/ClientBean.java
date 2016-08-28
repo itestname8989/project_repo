@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateful;
@@ -26,6 +27,8 @@ import javax.persistence.criteria.Root;
 
 import org.Invoice.springmvc.webapp.model.Client;
 import java.util.Iterator;
+
+import org.Invoice.service.AuthService;
 import org.Invoice.springmvc.webapp.model.BillingTerms;
 import org.Invoice.springmvc.webapp.model.Company;
 import org.Invoice.springmvc.webapp.model.Project;
@@ -316,5 +319,13 @@ public class ClientBean implements Serializable {
 		Client added = this.add;
 		this.add = new Client();
 		return added;
+	}
+	
+	@Inject
+	AuthService authService;
+	@PostConstruct
+	public void init() {
+	    // 
+		authService.validateUserLogin();
 	}
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateful;
@@ -25,6 +26,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.Invoice.springmvc.webapp.model.InvoiceLineItems;
+import org.Invoice.service.AuthService;
 import org.Invoice.springmvc.webapp.model.Invoice;
 import org.Invoice.springmvc.webapp.model.InvoiceLineItemStatus;
 
@@ -289,5 +291,13 @@ public class InvoiceLineItemsBean implements Serializable {
 		InvoiceLineItems added = this.add;
 		this.add = new InvoiceLineItems();
 		return added;
+	}
+	
+	@Inject
+	AuthService authService;
+	@PostConstruct
+	public void init() {
+	    // 
+		authService.validateUserLogin();
 	}
 }

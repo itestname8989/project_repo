@@ -2,8 +2,10 @@ package org.ProjectInvoice.view;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateful;
@@ -24,10 +26,11 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.Invoice.springmvc.webapp.model.Project;
-import java.util.Iterator;
+import org.Invoice.service.AuthService;
+import org.Invoice.springmvc.webapp.model.Account;
 import org.Invoice.springmvc.webapp.model.Client;
 import org.Invoice.springmvc.webapp.model.Employee;
+import org.Invoice.springmvc.webapp.model.Project;
 import org.Invoice.springmvc.webapp.model.ProjectStatus;
 
 /**
@@ -257,10 +260,29 @@ public class ProjectBean implements Serializable {
 
 	public List<Project> getAll() {
 
+		
 		CriteriaQuery<Project> criteria = this.entityManager
 				.getCriteriaBuilder().createQuery(Project.class);
 		return this.entityManager.createQuery(
 				criteria.select(criteria.from(Project.class))).getResultList();
+	}
+	
+	public List<Project> getAllPerUser() {
+
+		/*Account account = authService.getAccount();
+		if(account == null)
+			return null;
+		CriteriaQuery<Project> criteria = this.entityManager
+				.getCriteriaBuilder().createQuery(Project.class);
+		List<Project> list = this.entityManager.createQuery(
+				criteria.select(criteria.from(Project.class))).getResultList();
+		List<Project> returnList = new ArrayList<>();
+		for(Project p : list){
+			if()
+		}*/
+		if(authService.getAccount() == null)
+			return null;
+		return new ArrayList<Project>(authService.getAccount().getEmployee().getProjects());
 	}
 
 	@Resource
@@ -308,4 +330,18 @@ public class ProjectBean implements Serializable {
 		this.add = new Project();
 		return added;
 	}
+	
+	@Inject
+	AuthService authService;
+	@PostConstruct
+	public void init() {
+	    // 
+		authService.validateUserLogin();
+		
+		//to create new time entry
+		
+		
+	}
+	
+	
 }

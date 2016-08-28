@@ -35,102 +35,45 @@
 	<ui:define name="main">
 		<h:form id="create">
 			<h:messages globalOnly="true" styleClass="error"/>
-
-			<h:panelGrid columnClasses="label,component,required" columns="3">
-				<h:outputLabel for="newTimeEntryBeanNewTimeEntryProject" value="Project:"/>
-				<h:panelGroup>
-					<h:selectOneMenu converter="#{projectBean.converter}" id="newTimeEntryBeanNewTimeEntryProject" value="#{newTimeEntryBean.newTimeEntry.project}">
-						<f:selectItem/>
-						<f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{projectBean.all}" var="_item"/>
-					</h:selectOneMenu>
-					<h:message for="newTimeEntryBeanNewTimeEntryProject" styleClass="error"/>
-				</h:panelGroup>
-				<h:outputText/>
-				<h:outputLabel for="newTimeEntryBeanNewTimeEntryEmployee" value="Employee:"/>
-				<h:panelGroup>
-					<h:selectOneMenu converter="#{employeeBean.converter}" id="newTimeEntryBeanNewTimeEntryEmployee" value="#{newTimeEntryBean.newTimeEntry.employee}">
-						<f:selectItem/>
-						<f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{employeeBean.all}" var="_item"/>
-					</h:selectOneMenu>
-					<h:message for="newTimeEntryBeanNewTimeEntryEmployee" styleClass="error"/>
-				</h:panelGroup>
-				<h:outputText/>
-				<h:outputLabel for="newTimeEntryBeanNewTimeEntryMon" value="Mon:"/>
-				<h:panelGroup>
-					<h:inputText id="newTimeEntryBeanNewTimeEntryMon" value="#{newTimeEntryBean.newTimeEntry.mon}"/>
-					<h:message for="newTimeEntryBeanNewTimeEntryMon" styleClass="error"/>
-				</h:panelGroup>
-				<h:outputText/>
-				<h:outputLabel for="newTimeEntryBeanNewTimeEntryTue" value="Tue:"/>
-				<h:panelGroup>
-					<h:inputText id="newTimeEntryBeanNewTimeEntryTue" value="#{newTimeEntryBean.newTimeEntry.tue}"/>
-					<h:message for="newTimeEntryBeanNewTimeEntryTue" styleClass="error"/>
-				</h:panelGroup>
-				<h:outputText/>
-				<h:outputLabel for="newTimeEntryBeanNewTimeEntryWed" value="Wed:"/>
-				<h:panelGroup>
-					<h:inputText id="newTimeEntryBeanNewTimeEntryWed" value="#{newTimeEntryBean.newTimeEntry.wed}"/>
-					<h:message for="newTimeEntryBeanNewTimeEntryWed" styleClass="error"/>
-				</h:panelGroup>
-				<h:outputText/>
-				<h:outputLabel for="newTimeEntryBeanNewTimeEntryFri" value="Fri:"/>
-				<h:panelGroup>
-					<h:inputText id="newTimeEntryBeanNewTimeEntryFri" value="#{newTimeEntryBean.newTimeEntry.fri}"/>
-					<h:message for="newTimeEntryBeanNewTimeEntryFri" styleClass="error"/>
-				</h:panelGroup>
-				<h:outputText/>
-				<h:outputLabel for="newTimeEntryBeanNewTimeEntrySat" value="Sat:"/>
-				<h:panelGroup>
-					<h:inputText id="newTimeEntryBeanNewTimeEntrySat" value="#{newTimeEntryBean.newTimeEntry.sat}"/>
-					<h:message for="newTimeEntryBeanNewTimeEntrySat" styleClass="error"/>
-				</h:panelGroup>
-				<h:outputText/>
-				<h:outputLabel for="newTimeEntryBeanNewTimeEntrySun" value="Sun:"/>
-				<h:panelGroup>
-					<h:inputText id="newTimeEntryBeanNewTimeEntrySun" value="#{newTimeEntryBean.newTimeEntry.sun}"/>
-					<h:message for="newTimeEntryBeanNewTimeEntrySun" styleClass="error"/>
-				</h:panelGroup>
-				<h:outputText/>
-				<h:outputLabel for="newTimeEntryBeanNewTimeEntryStartDate" value="Start Date:"/>
-				<h:panelGroup>
-					<h:inputText id="newTimeEntryBeanNewTimeEntryStartDate" value="#{newTimeEntryBean.newTimeEntry.startDate}">
-						<f:convertDateTime type="date"/>
-					</h:inputText>
-					<h:message for="newTimeEntryBeanNewTimeEntryStartDate" styleClass="error"/>
-				</h:panelGroup>
-				<h:outputText/>
-				<h:outputLabel for="newTimeEntryBeanNewTimeEntryEndDate" value="End Date:"/>
-				<h:panelGroup>
-					<h:inputText id="newTimeEntryBeanNewTimeEntryEndDate" value="#{newTimeEntryBean.newTimeEntry.endDate}">
-						<f:convertDateTime type="date"/>
-					</h:inputText>
-					<h:message for="newTimeEntryBeanNewTimeEntryEndDate" styleClass="error"/>
-				</h:panelGroup>
-				<h:outputText/>
-				<h:outputLabel for="newTimeEntryBeanNewTimeEntryTotalHours" value="Total Hours:"/>
-				<h:panelGroup>
-					<h:inputText id="newTimeEntryBeanNewTimeEntryTotalHours" value="#{newTimeEntryBean.newTimeEntry.totalHours}"/>
-					<h:message for="newTimeEntryBeanNewTimeEntryTotalHours" styleClass="error"/>
-				</h:panelGroup>
-				<h:outputText/>
-				<h:outputLabel for="newTimeEntryBeanNewTimeEntryStatus" value="Status:"/>
-				<h:panelGroup>
-					<h:selectOneMenu id="newTimeEntryBeanNewTimeEntryStatus" value="#{newTimeEntryBean.newTimeEntry.status}">
-						<f:selectItem/>
-						<f:selectItem itemValue="APPROVED"/>
-						<f:selectItem itemValue="DENIED"/>
-						<f:selectItem itemValue="INVOICED"/>
-					</h:selectOneMenu>
-					<h:message for="newTimeEntryBeanNewTimeEntryStatus" styleClass="error"/>
-				</h:panelGroup>
-				<h:outputText/>
-				<h:outputLabel for="newTimeEntryBeanNewTimeEntryThu" value="Thu:"/>
-				<h:panelGroup>
-					<h:inputText id="newTimeEntryBeanNewTimeEntryThu" value="#{newTimeEntryBean.newTimeEntry.thu}"/>
-					<h:message for="newTimeEntryBeanNewTimeEntryThu" styleClass="error"/>
-				</h:panelGroup>
-				<h:outputText/>
-			</h:panelGrid>
+			
+			
+			<table border="1px" width="400" columns="9" cellpadding="5px">
+				<thead>
+					<tr>
+						<td class="projectTh">Project</td>
+						<td class="sun">Sun</td>
+						<td class="mon">Mon</td>
+						<td class="tue">Tue</td>
+						<td class="wed">Wed</td>
+						<td class="thu">Thu</td>
+						<td class="fri">Fri</td>
+						<td class="sat">Sat</td>
+						<td class="totalsTh">Totals</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							<h:panelGroup>
+								<h:selectOneMenu style="width:90px" converter="#{projectBean.converter}" id="newTimeEntryBeanNewTimeEntryProjectXX" value="#{newTimeEntryBean.newTimeEntry.project}">
+									<f:selectItem/>
+									<f:selectItems itemLabel="#{forgeview:display(_item)}" itemValue="#{_item}" value="#{projectBean.allPerUser}" var="_item"/>
+								</h:selectOneMenu>
+							<h:message for="newTimeEntryBeanNewTimeEntryProjectXX" styleClass="error"/>
+							</h:panelGroup>
+							<h:outputText/>
+						</td>
+						<td><h:inputText style="width:30px"  value="#{newTimeEntryBean.newTimeEntry.mon}" /></td>
+						<td><h:inputText style="width:30px"  value="#{newTimeEntryBean.newTimeEntry.tue}" /></td>
+						<td><h:inputText style="width:30px" value="#{newTimeEntryBean.newTimeEntry.wed}" /></td>
+						<td><h:inputText style="width:30px" value="#{newTimeEntryBean.newTimeEntry.thu}" /></td>
+						<td><h:inputText style="width:30px" value="#{newTimeEntryBean.newTimeEntry.fri}" /></td>
+						<td><h:inputText style="width:30px" value="#{newTimeEntryBean.newTimeEntry.sat}" /></td>
+						<td><h:inputText style="width:30px" value="#{newTimeEntryBean.newTimeEntry.sun}" /></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
 
 			<div class="buttons">
 				<h:commandLink value="Save" action='#{newTimeEntryBean.update}' styleClass="btn btn-primary"/>

@@ -35,25 +35,25 @@ public class NewTimeEntry implements Serializable {
 	private Employee employee;
 
 	@Column
-	private Float sun;
+	private Float sun = 0f;
 
 	@Column
-	private Float mon;
+	private Float mon = 0f;
 
 	@Column
-	private Float tue;
+	private Float tue = 0f;
 
 	@Column
-	private Float wed;
+	private Float wed = 0f;
 
 	@Column
-	private Float thu;
+	private Float thu = 0f;
 
 	@Column
-	private Float fri;
+	private Float fri = 0f;
 
 	@Column
-	private Float sat;
+	private Float sat = 0f;
 
 	@Column
 	@Temporal(TemporalType.DATE)
@@ -191,11 +191,19 @@ public class NewTimeEntry implements Serializable {
 	}
 
 	public Float getTotalHours() {
+		if(sun == null) sun = 0f;
+		if(mon == null) mon = 0f;
+		if(tue == null) tue = 0f;
+		if(wed == null) wed = 0f;
+		if(thu == null) thu = 0f;
+		if(fri == null) fri = 0f;
+		if(sat == null) sat = 0f;
+		totalHours = sun +  mon +  tue +  wed +  thu +  fri +  sat;
 		return totalHours;
 	}
 
 	public void setTotalHours(Float totalHours) {
-		this.totalHours = totalHours;
+		this.totalHours = getTotalHours();
 	}
 
 	public Status getStatus() {

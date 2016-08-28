@@ -48,4 +48,13 @@ public class AccountDao {
 		}
 		return findAllQuery.getResultList();
 	}
+	
+	public Account getUserByUsername(String username) {
+		List<Account> list = listAll(0, 1000);
+		for(Account a : list){
+			if(a.getUserName().equals(username.trim().toLowerCase()))
+					return a;
+		}
+		return null;
+	}
 }
